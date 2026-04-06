@@ -1,0 +1,5 @@
+{
+  "name": "Sentinel Secure",
+  "description": "A high-security hardware key verification interface.",
+  "requestFramePermissions": []
+}

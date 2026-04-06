@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #d4af37;
+  --color-sentinel-bg: #051005;
+}
+
+body {
+  background-color: var(--color-sentinel-bg);
+  color: var(--color-gold);
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
