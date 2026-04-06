@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Secure | Portable Version</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@700&display=swap');
+        
+        :root {
+            --gold: #d4af37;
+            --bg: #051005;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 3rem 1.5rem;
+        }
+
+        .gold-text { color: var(--gold); }
+        .gold-border { border-color: var(--gold); }
+        .gold-bg { background-color: var(--gold); }
+
+        /* Shield Animation */
+        .shield-svg {
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+        }
+
+        /* Progress Animation */
+        .progress-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hidden { display: none; }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Logo -->
+    <div class="w-full flex justify-end opacity-40">
+        <svg viewBox="0 0 100 100" class="w-12 h-12 fill-current">
+            <path d="M50 5 L90 27.5 V72.5 L50 95 L10 72.5 V27.5 L50 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 35 L80 35 L80 45 L20 45 Z" />
+            <path d="M20 55 L80 55 L80 65 L20 65 Z" />
+            <circle cx="50" cy="25" r="5" />
+        </svg>
+    </div>
+
+    <!-- Main Content: IDLE / VERIFYING -->
+    <div id="auth-screen" class="flex flex-col items-center justify-center flex-1 gap-20 fade-in">
+        <!-- Shield Logo -->
+        <div class="flex flex-col items-center">
+            <svg viewBox="0 0 100 120" class="w-40 h-48 shield-svg">
+                <path d="M50 0 L95 20 V60 C95 90 50 120 50 120 C50 120 5 90 5 60 V20 L50 0Z" fill="#1a1a1a" stroke="#D4AF37" stroke-width="2"/>
+                <path d="M50 8 L87 25 V60 C87 85 50 110 50 110 C50 110 13 85 13 60 V25 L50 8Z" fill="#D4AF37" />
+                <circle cx="50" cy="45" r="8" fill="black" />
+                <path d="M44 45 L56 45 L60 70 L40 70 Z" fill="black" />
+            </svg>
+            <div class="text-center mt-6">
+                <h1 class="text-3xl font-bold tracking-widest">SENTINEL</h1>
+                <p class="text-sm opacity-80">Secure Beyond Password</p>
+            </div>
+        </div>
+
+        <!-- USB Button -->
+        <div class="flex flex-col items-center gap-6">
+            <button id="usb-btn" class="p-6 rounded-3xl border-2 border-gold/40 hover:scale-105 active:scale-95 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7v5h4V7"/><path d="M10 7V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2"/><path d="M10 14v8h4v-8Z"/><rect width="8" height="8" x="8" y="14" rx="2"/></svg>
+            </button>
+            <div id="status-text" class="text-center italic tracking-wide">
+                Insert your Sentinel Key
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content: VERIFIED -->
+    <div id="dashboard-screen" class="hidden flex-col items-center justify-center flex-1 w-full max-w-md fade-in">
+        <div class="mb-12 opacity-80 scale-75">
+            <h1 class="text-xl font-bold tracking-widest text-center">SENTINEL</h1>
+        </div>
+
+        <div class="flex-1 flex flex-col items-center justify-center gap-12 text-center">
+            <div class="space-y-4">
+                <p class="text-gold/60 uppercase tracking-[0.2em] text-xs">Attached Device:</p>
+                <div class="space-y-1">
+                    <p class="font-bold text-xl tracking-widest">THIS DEVICE ATTACHED</p>
+                    <p class="italic text-lg">Verify Just Now</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <p class="text-gold/60 uppercase tracking-[0.2em] text-xs">Not Attached Device:</p>
+                <div class="space-y-2">
+                    <p class="font-bold tracking-widest opacity-80">BACKUP KEY</p>
+                    <p class="font-bold tracking-widest opacity-80">EMERGENCY KEY</p>
+                </div>
+            </div>
+
+            <div class="mt-8 opacity-60">
+                <svg viewBox="0 0 100 100" class="w-20 h-20 fill-current">
+                    <path d="M50 5 L90 27.5 V72.5 L50 95 L10 72.5 V27.5 L50 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M20 35 L80 35 L80 45 L20 45 Z" />
+                    <path d="M20 55 L80 55 L80 65 L20 65 Z" />
+                </svg>
+                <p class="text-[8px] font-bold tracking-[0.3em] uppercase mt-2">Sentinel | Key System</p>
+            </div>
+        </div>
+
+        <div class="mt-auto flex flex-col items-center gap-2">
+            <div class="p-4 rounded-2xl border-2 border-gold bg-gold/10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7v5h4V7"/><path d="M10 7V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2"/><path d="M10 14v8h4v-8Z"/><rect width="8" height="8" x="8" y="14" rx="2"/></svg>
+            </div>
+            <p class="font-bold text-sm">Access Verified</p>
+            <p class="text-xs opacity-60">System: SECURE</p>
+            
+            <button onclick="resetSystem()" class="mt-8 text-[10px] opacity-30 hover:opacity-100 transition-opacity uppercase tracking-widest">Reset System</button>
+        </div>
+    </div>
+
+    <div class="h-12"></div>
+
+    <script>
+        const usbBtn = document.getElementById('usb-btn');
+        const statusText = document.getElementById('status-text');
+        const authScreen = document.getElementById('auth-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+
+        let isVerifying = false;
+
+        usbBtn.addEventListener('click', () => {
+            if (isVerifying) return;
+            
+            isVerifying = true;
+            usbBtn.classList.add('pulse');
+            usbBtn.classList.add('border-gold');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                statusText.innerHTML = `
+                    <div class="space-y-1">
+                        <p>Verifying Sentinel Key...</p>
+                        <p class="text-2xl progress-font not-italic font-bold">${progress}%</p>
+                    </div>
+                `;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    showDashboard();
+                }
+            }, 50);
+        });
+
+        function showDashboard() {
+            authScreen.classList.add('hidden');
+            dashboardScreen.classList.remove('hidden');
+            dashboardScreen.classList.add('flex');
+        }
+
+        function resetSystem() {
+            isVerifying = false;
+            progress = 0;
+            authScreen.classList.remove('hidden');
+            dashboardScreen.classList.add('hidden');
+            dashboardScreen.classList.remove('flex');
+            usbBtn.classList.remove('pulse');
+            usbBtn.classList.remove('border-gold');
+            statusText.innerHTML = "Insert your Sentinel Key";
+        }
+    </script>
+</body>
+</html>
