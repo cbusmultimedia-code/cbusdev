@@ -4,12 +4,20 @@ import { SentinelLogo } from "./components/SentinelLogo";
 import { SentinelKeyLogo } from "./components/SentinelKeyLogo";
 import { UsbStatus } from "./components/UsbStatus";
 import { CircuitBackground } from "./components/CircuitBackground";
+import { TerminalOutput } from "./components/TerminalOutput";
+
+import { ChevronLeft } from "lucide-react";
 
 type AppState = "idle" | "verifying" | "verified";
 
 export default function App() {
   const [state, setState] = useState<AppState>("idle");
   const [progress, setProgress] = useState(0);
+
+  const resetSystem = () => {
+    setState("idle");
+    setProgress(0);
+  };
 
   const handleInsertKey = () => {
     if (state === "idle") {
@@ -20,16 +28,18 @@ export default function App() {
 
   useEffect(() => {
     if (state === "verifying") {
+      // 5 seconds = 5000ms. 100 steps. 50ms per step.
       const interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval);
-            setState("verified");
+            // Add a small delay after 100% before showing dashboard
+            setTimeout(() => setState("verified"), 500);
             return 100;
           }
-          return prev + 1; // Slower, more deliberate progress
+          return prev + 1;
         });
-      }, 40);
+      }, 50);
       return () => clearInterval(interval);
     }
   }, [state]);
@@ -52,12 +62,18 @@ export default function App() {
 
       {/* Top Status */}
       <div className="w-full flex justify-between items-start z-10">
-        <div className="flex items-center gap-3">
-          <div className="sm:block">
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold">Sentinel</p>
+        <motion.button 
+          onClick={resetSystem}
+          whileHover={{ x: -2 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-2 group transition-colors"
+        >
+          <ChevronLeft size={16} className="text-gold/40 group-hover:text-gold transition-colors" />
+          <div className="text-left">
+            <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold group-hover:drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]">Sentinel</p>
             <p className="text-[8px] tracking-[0.2em] uppercase text-gold/60">Key System</p>
           </div>
-        </div>
+        </motion.button>
         <div className="opacity-40">
           <p className="text-[10px] font-mono">SECURE_LINK: ACTIVE</p>
         </div>
@@ -70,7 +86,7 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 1.1 }}
-            className="flex flex-col items-center justify-center flex-1 gap-24 z-10"
+            className="flex flex-col items-center justify-center flex-1 gap-12 z-10 w-full"
           >
             <div className="relative">
               {state === "verifying" && (
@@ -80,8 +96,19 @@ export default function App() {
                   transition={{ duration: 2, repeat: Infinity }}
                 />
               )}
-              <SentinelLogo size="large" />
+              <SentinelLogo size={state === "verifying" ? "small" : "large"} />
             </div>
+
+            {state === "verifying" && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="w-full flex justify-center"
+              >
+                <TerminalOutput />
+              </motion.div>
+            )}
+
             <UsbStatus status={state} progress={progress} onClick={handleInsertKey} />
           </motion.div>
         ) : (
