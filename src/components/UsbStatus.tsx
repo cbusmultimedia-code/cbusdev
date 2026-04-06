@@ -4,11 +4,13 @@ import { motion } from "motion/react";
 export const UsbStatus = ({ 
   status, 
   progress = 0,
-  onClick 
+  onClick,
+  onDoubleClick
 }: { 
   status: "idle" | "verifying" | "verified",
   progress?: number,
-  onClick?: () => void
+  onClick?: () => void,
+  onDoubleClick?: () => void
 }) => {
   return (
     <div className="flex flex-col items-center gap-4">
@@ -16,6 +18,7 @@ export const UsbStatus = ({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onClick}
+        onDoubleClick={onDoubleClick}
         disabled={status === "verifying"}
         className={`p-6 rounded-3xl border-2 transition-colors duration-500 ${
           status === "verified" 
@@ -39,7 +42,6 @@ export const UsbStatus = ({
         {status === "verifying" && (
           <div className="space-y-1">
             <p>Verifying Sentinel Key...</p>
-            <p className="text-2xl font-mono not-italic font-bold">{progress}%</p>
           </div>
         )}
         {status === "verified" && (

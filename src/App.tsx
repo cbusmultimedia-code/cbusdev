@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SentinelLogo } from "./components/SentinelLogo";
-import { SentinelKeyLogo } from "./components/SentinelKeyLogo";
 import { UsbStatus } from "./components/UsbStatus";
-import { CircuitBackground } from "./components/CircuitBackground";
-import { TerminalOutput } from "./components/TerminalOutput";
-
-import { ChevronLeft } from "lucide-react";
 
 type AppState = "idle" | "verifying" | "verified";
 
@@ -46,39 +41,6 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-sentinel-bg flex flex-col items-center justify-between py-12 px-6 overflow-hidden">
-      {/* High-tech animated background during verification */}
-      <AnimatePresence>
-        {state === "verifying" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 z-0"
-          >
-            <CircuitBackground />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Top Status */}
-      <div className="w-full flex justify-between items-start z-10">
-        <motion.button 
-          onClick={resetSystem}
-          whileHover={{ x: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 group transition-colors"
-        >
-          <ChevronLeft size={16} className="text-gold/40 group-hover:text-gold transition-colors" />
-          <div className="text-left">
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold group-hover:drop-shadow-[0_0_5px_rgba(212,175,55,0.5)]">Sentinel</p>
-            <p className="text-[8px] tracking-[0.2em] uppercase text-gold/60">Key System</p>
-          </div>
-        </motion.button>
-        <div className="opacity-40">
-          <p className="text-[10px] font-mono">SECURE_LINK: ACTIVE</p>
-        </div>
-      </div>
-
       <AnimatePresence mode="wait">
         {state !== "verified" ? (
           <motion.div
@@ -98,16 +60,6 @@ export default function App() {
               )}
               <SentinelLogo size={state === "verifying" ? "small" : "large"} />
             </div>
-
-            {state === "verifying" && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                className="w-full flex justify-center"
-              >
-                <TerminalOutput />
-              </motion.div>
-            )}
 
             <UsbStatus status={state} progress={progress} onClick={handleInsertKey} />
           </motion.div>
@@ -151,7 +103,7 @@ export default function App() {
             </div>
 
             <div className="mt-auto pt-12">
-              <UsbStatus status="verified" />
+              <UsbStatus status="verified" onDoubleClick={resetSystem} />
             </div>
             
             <button 
