@@ -3,9 +3,11 @@ import { motion } from "motion/react";
 
 export const UsbStatus = ({ 
   status, 
+  progress = 0,
   onClick 
 }: { 
   status: "idle" | "verifying" | "verified",
+  progress?: number,
   onClick?: () => void
 }) => {
   return (
@@ -27,21 +29,26 @@ export const UsbStatus = ({
         />
       </motion.button>
       
-      <motion.p
+      <motion.div
         key={status}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-gold font-medium italic tracking-wide"
+        className="text-gold font-medium italic tracking-wide text-center"
       >
         {status === "idle" && "Insert your Sentinel Key"}
-        {status === "verifying" && "Verifying Sentinel Key..."}
+        {status === "verifying" && (
+          <div className="space-y-1">
+            <p>Verifying Sentinel Key...</p>
+            <p className="text-2xl font-mono not-italic font-bold">{progress}%</p>
+          </div>
+        )}
         {status === "verified" && (
           <div className="text-center">
             <p className="not-italic">Access Verified</p>
             <p className="not-italic font-bold">System: SECURE</p>
           </div>
         )}
-      </motion.p>
+      </motion.div>
     </div>
   );
 };

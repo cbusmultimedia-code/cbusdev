@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Sentinel Secure - Key System
 
-# Run and deploy your AI Studio app
+A high-security hardware key verification interface built with React, Vite, and Tailwind CSS.
 
-This contains everything you need to run your app locally.
+## 🚀 Cara Deployment
 
-View your app in AI Studio: https://ai.studio/apps/4375de0d-1252-4d1b-868c-0f14c151d70d
+### Opsi 1: Vercel (Paling Mudah)
+1. Hubungkan akun GitHub Anda ke [Vercel](https://vercel.com).
+2. Pilih repositori ini.
+3. Tambahkan Environment Variable:
+   - `GEMINI_API_KEY`: (API Key dari Google AI Studio)
+4. Klik **Deploy**.
 
-## Run Locally
+### Opsi 2: GitHub Pages
+1. Buka **Settings** di repositori GitHub Anda.
+2. Pilih **Pages** di sidebar kiri.
+3. Pada bagian **Build and deployment**, pilih **GitHub Actions** sebagai sumber (Source).
+4. Saya sudah menyertakan file workflow di `.github/workflows/deploy.yml`. Aplikasi akan otomatis ter-deploy setiap kali Anda melakukan push ke branch `main`.
 
-**Prerequisites:**  Node.js
+## 🛠️ Teknologi yang Digunakan
+- **React 19**
+- **Vite** (Build tool)
+- **Tailwind CSS 4** (Styling)
+- **Framer Motion** (Animations)
+- **Lucide React** (Icons)
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🔒 Fitur Keamanan (Simulasi)
+- Verifikasi kunci perangkat keras (USB).
+- Animasi progres verifikasi 0-100%.
+- Dashboard status perangkat terenkripsi.
